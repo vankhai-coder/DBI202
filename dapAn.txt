@@ -55,4 +55,4 @@ SELECT P.proNum AS "MA DU AN",P.proName AS "TEN DU AN",D.depName AS "TEN PHONG B
 FROM (tblProject AS P INNER JOIN tblLocation AS L ON P.locNum = L.locNum )
 	INNER JOIN tblDepartment AS D ON D.depNum = P.depNum 
 WHERE L.locName =  N'TP Hồ Chí Minh'
---
+--them ti noi dun 
