@@ -1,0 +1,58 @@
+--1.Cho biết ai đang quản lý phòng ban có tên: Phòng Nghiên cứu và phát triển.
+--Thông tin yêu cầu: mã số,họ tên nhân viên, mã số phòng ban, tên phòng ban.
+SELECT E.empSSN AS "MA SO",E.empName AS "HO TEN",D.depNum AS "MA SO PHONG BAN",D.depName AS "TEN PHONG BAN" 
+FROM tblDepartment AS D INNER JOIN tblEmployee AS E ON D.depNum = E.depNum  
+WHERE D.depName = N'Phòng Nghiên cứu và phát triển' ; 
+--2.Cho phòng ban có tên: Phòng Nghiên cứu và phát triển hiện đang quản lý dự án nào.
+--Thông tin yêu cầu: mã số dụ án, tên dự án, tên phòng ban quản lý
+SELECT P.proNum AS "MA SO DU AN ",P.proName AS "TEN DU AN ",D.depName AS "TEN PHONG BAN QUAN LI"
+FROM tblDepartment AS D INNER JOIN tblProject AS P ON D.depNum = P.depNum 
+WHERE D.depName = N'Phòng Nghiên cứu và phát triển' ; 
+--3.Cho biết dự án có tên ProjectB hiện đang được quản lý bởi phòng ban nào.
+--Thông tin yêu cầu: mã số dụ án, tên dự án, tên phòng ban quản lý
+SELECT P.proNum AS "MA SO DU AN ",P.proName AS "TEN DU AN",D.depName AS "TEN PHONG BAN QUAN LI"
+FROM tblDepartment AS D INNER JOIN tblProject AS P ON D.depNum = P.depNum  
+WHERE P.proName = 'ProjectB' ; 
+--4.Cho biết những nhân viên nào đang bị giám sát bởi nhân viên có tên Mai Duy An.
+--Thông tin yêu cầu: mã số nhân viên, họ tên nhân viên
+
+--5.Cho biết ai hiện đang giám sát những nhân viên có tên Mai Duy An. 
+--Thông tin yêu cầu: mã số nhân viên, họ tên nhân viên giám sát.
+
+--6.Cho biết dự án có tên ProjectA hiện đang làm việc ở đâu.
+--Thông tin yêu cầu: mã số, tên vị trí làm việc.
+SELECT L.locNum AS "MA SO ",L.locName AS "TEN VI TRI"
+FROM tblProject AS P JOIN tblLocation AS L ON P.locNum = L.locNum 
+WHERE P.proName = 'ProjectA'
+--7.Cho biết vị trí làm việc có tên Tp. HCM hiện đang là chỗ làm việc của những dự án nào.
+--Thông tin yêu cầu: mã số, tên dự án
+SELECT P.proNum AS "MA SO ",P.proName AS "TEN DU AN"
+FROM tblProject AS P INNER JOIN tblLocation AS L ON P.locNum = L.locNum
+WHERE L.locName = N'TP Hồ Chí Minh' ; 
+--8.Cho biết những người phụ thuộc trên 18 tuổi .
+--Thông tin yêu cầu: 
+--tên, ngày tháng năm sinh của người phụ thuộc, tên nhân viên phụ thuộc vào.
+SELECT D.depName AS "TEN NGUOI PHU THUOC",
+		D.depBirthdate AS "NGAY THANG NAM SINH",E.empName AS "TEN NHAN VIEN PHU THUOC"
+FROM tblEmployee AS E INNER JOIN tblDependent AS D ON E.empSSN = D.empSSN 
+WHERE DATEDIFF (YEAR , D.depBirthdate , GETDATE()) > 18 ; 
+--9.Cho biết những người phụ thuộc  là nam giới. 
+--Thông tin yêu cầu: tên, ngày tháng năm sinh của người phụ thuộc
+--, tên nhân viên phụ thuộc vào 
+SELECT D.depName AS  "TEN NGUOI PHU THUOC",D.depBirthdate AS "NGAY THANG NAM SINH",
+	E.empName AS "TEN NHAN VIEN"
+FROM tblEmployee AS E INNER JOIN tblDependent AS D ON E.empSSN = D.empSSN 
+WHERE D.depSex = 'M'
+--10.Cho biết những nơi làm việc của phòng ban có tên : Phòng Nghiên cứu và phát triển.
+--Thông tin yêu cầu: mã phòng ban, tên phòng ban, tên nơi làm việc.
+SELECT D.mgrSSN  AS "MA PHONG BAN",D.depName AS "TEN PHONG BAN",LO.locName AS "TEN NOI LAM VIEC"
+FROM (tblDepartment AS D INNER JOIN tblDepLocation AS DL ON D.depNum = DL.depNum ) 
+INNER JOIN tblLocation AS LO ON DL.locNum = LO.locNum 
+WHERE D.depName = N'Phòng Nghiên cứu và phát triển' ; 
+--11.Cho biết các dự án làm việc tại Tp. HCM. Thông tin yêu cầu:
+--mã dự án, tên dự án, tên phòng ban chịu trách nhiệm dự án.
+SELECT P.proNum AS "MA DU AN",P.proName AS "TEN DU AN",D.depName AS "TEN PHONG BAN"
+FROM (tblProject AS P INNER JOIN tblLocation AS L ON P.locNum = L.locNum )
+	INNER JOIN tblDepartment AS D ON D.depNum = P.depNum 
+WHERE L.locName =  N'TP Hồ Chí Minh'
+--
